@@ -1,0 +1,1485 @@
+{
+  "nodes": [
+    {
+      "id": "worker_0",
+      "position": {
+        "x": -76.66289555362955,
+        "y": 21.771737900480503
+      },
+      "type": "customNode",
+      "data": {
+        "id": "worker_0",
+        "label": "Worker",
+        "version": 2,
+        "name": "worker",
+        "type": "Worker",
+        "baseClasses": [
+          "Worker"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Worker Name",
+            "name": "workerName",
+            "type": "string",
+            "placeholder": "Worker",
+            "id": "worker_0-input-workerName-string"
+          },
+          {
+            "label": "Worker Prompt",
+            "name": "workerPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "worker_0-input-workerPrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "worker_0-input-promptValues-json"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "id": "worker_0-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "worker_0-input-tools-Tool"
+          },
+          {
+            "label": "Supervisor",
+            "name": "supervisor",
+            "type": "Supervisor",
+            "id": "worker_0-input-supervisor-Supervisor"
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat. If not specified, supervisor's model will be used",
+            "id": "worker_0-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "workerName": "Assistente de Atendimento Jurídico",
+          "workerPrompt": "Você é um assistente jurídico especializado em responder perguntas frequentes relacionadas a processos legais, documentos necessários e informações básicas sobre áreas do direito. Responda de forma clara, sucinta e educada. Se a questão for muito específica, recomende procurar um advogado para análise detalhada",
+          "tools": "",
+          "supervisor": "{{supervisor_0.data.instance}}",
+          "model": "",
+          "promptValues": "",
+          "maxIterations": ""
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 722,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": -76.66289555362955,
+        "y": 21.771737900480503
+      }
+    },
+    {
+      "id": "supervisor_0",
+      "position": {
+        "x": -445.6488098396919,
+        "y": 620.388463354223
+      },
+      "type": "customNode",
+      "data": {
+        "id": "supervisor_0",
+        "label": "Supervisor",
+        "version": 3,
+        "name": "supervisor",
+        "type": "Supervisor",
+        "baseClasses": [
+          "Supervisor"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Supervisor Name",
+            "name": "supervisorName",
+            "type": "string",
+            "placeholder": "Supervisor",
+            "default": "Supervisor",
+            "id": "supervisor_0-input-supervisorName-string"
+          },
+          {
+            "label": "Supervisor Prompt",
+            "name": "supervisorPrompt",
+            "type": "string",
+            "description": "Prompt must contains {team_members}",
+            "rows": 4,
+            "default": "You are a supervisor tasked with managing a conversation between the following workers: {team_members}.\nGiven the following user request, respond with the worker to act next.\nEach worker will perform a task and respond with their results and status.\nWhen finished, respond with FINISH.\nSelect strategically to minimize the number of steps taken.",
+            "additionalParams": true,
+            "id": "supervisor_0-input-supervisorPrompt-string"
+          },
+          {
+            "label": "Summarization",
+            "name": "summarization",
+            "type": "boolean",
+            "description": "Return final output as a summarization of the conversation",
+            "optional": true,
+            "additionalParams": true,
+            "id": "supervisor_0-input-summarization-boolean"
+          },
+          {
+            "label": "Recursion Limit",
+            "name": "recursionLimit",
+            "type": "number",
+            "description": "Maximum number of times a call can recurse. If not provided, defaults to 100.",
+            "default": 100,
+            "additionalParams": true,
+            "id": "supervisor_0-input-recursionLimit-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, GroqChat. Best result with GPT-4 model",
+            "id": "supervisor_0-input-model-BaseChatModel"
+          },
+          {
+            "label": "Agent Memory",
+            "name": "agentMemory",
+            "type": "BaseCheckpointSaver",
+            "description": "Save the state of the agent",
+            "optional": true,
+            "id": "supervisor_0-input-agentMemory-BaseCheckpointSaver"
+          },
+          {
+            "label": "Input Moderation",
+            "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+            "name": "inputModeration",
+            "type": "Moderation",
+            "optional": true,
+            "list": true,
+            "id": "supervisor_0-input-inputModeration-Moderation"
+          }
+        ],
+        "inputs": {
+          "supervisorName": "Supervisor",
+          "supervisorPrompt": "Você é o supervisor, responsável por monitorar e avaliar a performance dos agentes jurídicos automatizados. Analise a eficiência, relevância e precisão das respostas geradas por cada agente, fornecendo sugestões para melhorias. Relate quaisquer inconsistências e assegure que os fluxos estejam em conformidade com as normas jurídicas e operacionais da empresa.",
+          "model": "{{groqChat_0.data.instance}}",
+          "agentMemory": "",
+          "summarization": "",
+          "recursionLimit": 100,
+          "inputModeration": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "supervisor_0-output-supervisor-Supervisor",
+            "name": "supervisor",
+            "label": "Supervisor",
+            "description": "",
+            "type": "Supervisor"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 483,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -445.6488098396919,
+        "y": 620.388463354223
+      },
+      "dragging": false
+    },
+    {
+      "id": "groqChat_0",
+      "position": {
+        "x": -450.06802560950126,
+        "y": 85.92185463240634
+      },
+      "type": "customNode",
+      "data": {
+        "id": "groqChat_0",
+        "label": "GroqChat",
+        "version": 3,
+        "name": "groqChat",
+        "type": "GroqChat",
+        "baseClasses": [
+          "GroqChat",
+          "BaseChatModel",
+          "BaseLanguageModel",
+          "Runnable"
+        ],
+        "category": "Chat Models",
+        "description": "Wrapper around Groq API with LPU Inference Engine",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "groqApi"
+            ],
+            "optional": true,
+            "id": "groqChat_0-input-credential-credential"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "placeholder": "llama3-70b-8192",
+            "id": "groqChat_0-input-modelName-asyncOptions"
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "groqChat_0-input-temperature-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Cache",
+            "name": "cache",
+            "type": "BaseCache",
+            "optional": true,
+            "id": "groqChat_0-input-cache-BaseCache"
+          }
+        ],
+        "inputs": {
+          "cache": "",
+          "modelName": "llama-3.1-8b-instant",
+          "temperature": 0.9
+        },
+        "outputAnchors": [
+          {
+            "id": "groqChat_0-output-groqChat-GroqChat|BaseChatModel|BaseLanguageModel|Runnable",
+            "name": "groqChat",
+            "label": "GroqChat",
+            "description": "Wrapper around Groq API with LPU Inference Engine",
+            "type": "GroqChat | BaseChatModel | BaseLanguageModel | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 521,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -450.06802560950126,
+        "y": 85.92185463240634
+      },
+      "dragging": false
+    },
+    {
+      "id": "worker_1",
+      "position": {
+        "x": 243.42264930938148,
+        "y": 400.87006226933727
+      },
+      "type": "customNode",
+      "data": {
+        "id": "worker_1",
+        "label": "Worker",
+        "version": 2,
+        "name": "worker",
+        "type": "Worker",
+        "baseClasses": [
+          "Worker"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Worker Name",
+            "name": "workerName",
+            "type": "string",
+            "placeholder": "Worker",
+            "id": "worker_1-input-workerName-string"
+          },
+          {
+            "label": "Worker Prompt",
+            "name": "workerPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "worker_1-input-workerPrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "worker_1-input-promptValues-json"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "id": "worker_1-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "worker_1-input-tools-Tool"
+          },
+          {
+            "label": "Supervisor",
+            "name": "supervisor",
+            "type": "Supervisor",
+            "id": "worker_1-input-supervisor-Supervisor"
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat. If not specified, supervisor's model will be used",
+            "id": "worker_1-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "workerName": " Analisador de Contratos",
+          "workerPrompt": "Você é um especialista em análise de contratos jurídicos. Identifique cláusulas-chave, pontos críticos ou termos que possam causar problemas futuros. Destaque sugestões para correção ou melhorias e apresente um resumo compreensível para um advogado ou cliente leigo.",
+          "tools": [
+            "{{exaSearch_0.data.instance}}"
+          ],
+          "supervisor": "{{supervisor_0.data.instance}}",
+          "model": "",
+          "promptValues": "",
+          "maxIterations": ""
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 722,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 243.42264930938148,
+        "y": 400.87006226933727
+      }
+    },
+    {
+      "id": "worker_2",
+      "position": {
+        "x": 563.1779691511651,
+        "y": 27.319518257097968
+      },
+      "type": "customNode",
+      "data": {
+        "id": "worker_2",
+        "label": "Worker",
+        "version": 2,
+        "name": "worker",
+        "type": "Worker",
+        "baseClasses": [
+          "Worker"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Worker Name",
+            "name": "workerName",
+            "type": "string",
+            "placeholder": "Worker",
+            "id": "worker_2-input-workerName-string"
+          },
+          {
+            "label": "Worker Prompt",
+            "name": "workerPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "worker_2-input-workerPrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "worker_2-input-promptValues-json"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "id": "worker_2-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "worker_2-input-tools-Tool"
+          },
+          {
+            "label": "Supervisor",
+            "name": "supervisor",
+            "type": "Supervisor",
+            "id": "worker_2-input-supervisor-Supervisor"
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat. If not specified, supervisor's model will be used",
+            "id": "worker_2-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "workerName": "Gerador de Documentos Jurídicos",
+          "workerPrompt": "Você é um gerador automatizado de documentos jurídicos. Com base nas informações fornecidas, produza contratos, declarações ou petições completas, usando uma linguagem técnica adequada e cumprindo os requisitos formais de acordo com a legislação",
+          "tools": "",
+          "supervisor": "{{supervisor_0.data.instance}}",
+          "model": "",
+          "promptValues": "",
+          "maxIterations": ""
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 722,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 563.1779691511651,
+        "y": 27.319518257097968
+      }
+    },
+    {
+      "id": "worker_3",
+      "position": {
+        "x": 903.0770152878097,
+        "y": 445.4504401350129
+      },
+      "type": "customNode",
+      "data": {
+        "id": "worker_3",
+        "label": "Worker",
+        "version": 2,
+        "name": "worker",
+        "type": "Worker",
+        "baseClasses": [
+          "Worker"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Worker Name",
+            "name": "workerName",
+            "type": "string",
+            "placeholder": "Worker",
+            "id": "worker_3-input-workerName-string"
+          },
+          {
+            "label": "Worker Prompt",
+            "name": "workerPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "worker_3-input-workerPrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "worker_3-input-promptValues-json"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "id": "worker_3-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "worker_3-input-tools-Tool"
+          },
+          {
+            "label": "Supervisor",
+            "name": "supervisor",
+            "type": "Supervisor",
+            "id": "worker_3-input-supervisor-Supervisor"
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat. If not specified, supervisor's model will be used",
+            "id": "worker_3-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "workerName": "Pesquisador Jurídico Automatizado",
+          "workerPrompt": "Você é um pesquisador jurídico avançado. Sua tarefa é buscar jurisprudências, artigos ou decisões judiciais relevantes para a questão apresentada. Apresente um resumo com citações importantes, destacando tribunal, data e a essência da decisão",
+          "tools": [
+            "{{exaSearch_0.data.instance}}",
+            "{{webBrowser_0.data.instance}}"
+          ],
+          "supervisor": "{{supervisor_0.data.instance}}",
+          "model": "",
+          "promptValues": "",
+          "maxIterations": ""
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 722,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 903.0770152878097,
+        "y": 445.4504401350129
+      }
+    },
+    {
+      "id": "worker_4",
+      "position": {
+        "x": 1248.3917517725822,
+        "y": 43.236364280250285
+      },
+      "type": "customNode",
+      "data": {
+        "id": "worker_4",
+        "label": "Worker",
+        "version": 2,
+        "name": "worker",
+        "type": "Worker",
+        "baseClasses": [
+          "Worker"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Worker Name",
+            "name": "workerName",
+            "type": "string",
+            "placeholder": "Worker",
+            "id": "worker_4-input-workerName-string"
+          },
+          {
+            "label": "Worker Prompt",
+            "name": "workerPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "worker_4-input-workerPrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "worker_4-input-promptValues-json"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "id": "worker_4-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "worker_4-input-tools-Tool"
+          },
+          {
+            "label": "Supervisor",
+            "name": "supervisor",
+            "type": "Supervisor",
+            "id": "worker_4-input-supervisor-Supervisor"
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat. If not specified, supervisor's model will be used",
+            "id": "worker_4-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "workerName": "Monitor de Prazos Processuais",
+          "workerPrompt": "Você é um assistente jurídico focado no monitoramento de prazos. Receba informações de processos, calcule datas importantes e envie lembretes claros e pontuais para os advogados envolvidos. Sempre confirme as configurações antes de registrar um novo prazo",
+          "tools": "",
+          "supervisor": "{{supervisor_0.data.instance}}",
+          "model": "",
+          "promptValues": "",
+          "maxIterations": ""
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 722,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 1248.3917517725822,
+        "y": 43.236364280250285
+      }
+    },
+    {
+      "id": "worker_5",
+      "position": {
+        "x": 1584.988547696955,
+        "y": 413.7488380971992
+      },
+      "type": "customNode",
+      "data": {
+        "id": "worker_5",
+        "label": "Worker",
+        "version": 2,
+        "name": "worker",
+        "type": "Worker",
+        "baseClasses": [
+          "Worker"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Worker Name",
+            "name": "workerName",
+            "type": "string",
+            "placeholder": "Worker",
+            "id": "worker_5-input-workerName-string"
+          },
+          {
+            "label": "Worker Prompt",
+            "name": "workerPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "worker_5-input-workerPrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "worker_5-input-promptValues-json"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "id": "worker_5-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "worker_5-input-tools-Tool"
+          },
+          {
+            "label": "Supervisor",
+            "name": "supervisor",
+            "type": "Supervisor",
+            "id": "worker_5-input-supervisor-Supervisor"
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat. If not specified, supervisor's model will be used",
+            "id": "worker_5-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "workerName": "Orientador de Clientes",
+          "workerPrompt": "Você é um orientador jurídico treinado para ajudar clientes em situações comuns. Explique os passos iniciais de forma clara e prática, sempre destacando a importância de buscar orientação com um advogado para detalhes específicos",
+          "tools": "",
+          "supervisor": "{{supervisor_0.data.instance}}",
+          "model": "",
+          "promptValues": "",
+          "maxIterations": ""
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 722,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 1584.988547696955,
+        "y": 413.7488380971992
+      }
+    },
+    {
+      "id": "exaSearch_0",
+      "position": {
+        "x": 913.4049826455044,
+        "y": 68.2996737285636
+      },
+      "type": "customNode",
+      "data": {
+        "id": "exaSearch_0",
+        "label": "Exa Search",
+        "version": 1,
+        "name": "exaSearch",
+        "type": "ExaSearch",
+        "baseClasses": [
+          "ExaSearch",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Wrapper around Exa Search API - search engine fully designed for use by LLMs",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "exaSearchApi"
+            ],
+            "id": "exaSearch_0-input-credential-credential"
+          },
+          {
+            "label": "Tool Description",
+            "name": "description",
+            "type": "string",
+            "description": "Description of what the tool does. This is for LLM to determine when to use this tool.",
+            "rows": 4,
+            "additionalParams": true,
+            "default": "A wrapper around Exa Search. Input should be an Exa-optimized query. Output is a JSON array of the query results",
+            "id": "exaSearch_0-input-description-string"
+          },
+          {
+            "label": "Num of Results",
+            "name": "numResults",
+            "type": "number",
+            "optional": true,
+            "step": 1,
+            "additionalParams": true,
+            "description": "Number of search results to return. Default 10. Max 10 for basic plans. Up to thousands for custom plans.",
+            "id": "exaSearch_0-input-numResults-number"
+          },
+          {
+            "label": "Search Type",
+            "name": "type",
+            "type": "options",
+            "options": [
+              {
+                "label": "keyword",
+                "name": "keyword"
+              },
+              {
+                "label": "neural",
+                "name": "neural"
+              },
+              {
+                "label": "magic",
+                "name": "magic",
+                "description": "decides between keyword and neural"
+              }
+            ],
+            "optional": true,
+            "additionalParams": true,
+            "id": "exaSearch_0-input-type-options"
+          },
+          {
+            "label": "Use Auto Prompt",
+            "name": "useAutoprompt",
+            "type": "boolean",
+            "optional": true,
+            "additionalParams": true,
+            "description": "If true, your query will be converted to a Exa query. Default false.",
+            "id": "exaSearch_0-input-useAutoprompt-boolean"
+          },
+          {
+            "label": "Category (Beta)",
+            "name": "category",
+            "type": "options",
+            "description": "A data category to focus on, with higher comprehensivity and data cleanliness. Categories right now include company, research paper, news, github, tweet, movie, song, personal site, and pdf",
+            "options": [
+              {
+                "label": "company",
+                "name": "company"
+              },
+              {
+                "label": "research paper",
+                "name": "research paper"
+              },
+              {
+                "label": "news",
+                "name": "news"
+              },
+              {
+                "label": "github",
+                "name": "github"
+              },
+              {
+                "label": "tweet",
+                "name": "tweet"
+              },
+              {
+                "label": "movie",
+                "name": "movie"
+              },
+              {
+                "label": "song",
+                "name": "song"
+              },
+              {
+                "label": "pdf",
+                "name": "pdf"
+              },
+              {
+                "label": "personal site",
+                "name": "personal site"
+              }
+            ],
+            "optional": true,
+            "additionalParams": true,
+            "id": "exaSearch_0-input-category-options"
+          },
+          {
+            "label": "Include Domains",
+            "name": "includeDomains",
+            "type": "string",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "description": "List of domains to include in the search, separated by comma. If specified, results will only come from these domains.",
+            "id": "exaSearch_0-input-includeDomains-string"
+          },
+          {
+            "label": "Exclude Domains",
+            "name": "excludeDomains",
+            "type": "string",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "description": "List of domains to exclude in the search, separated by comma. If specified, results will not include any from these domains.",
+            "id": "exaSearch_0-input-excludeDomains-string"
+          },
+          {
+            "label": "Start Crawl Date",
+            "name": "startCrawlDate",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "placeholder": "2023-01-01T00:00:00.000Z",
+            "description": "Crawl date refers to the date that Exa discovered a link. Results will include links that were crawled after this date. Must be specified in ISO 8601 format.",
+            "id": "exaSearch_0-input-startCrawlDate-string"
+          },
+          {
+            "label": "End Crawl Date",
+            "name": "endCrawlDate",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "placeholder": "2023-12-31T00:00:00.000Z",
+            "description": "Crawl date refers to the date that Exa discovered a link. Results will include links that were crawled before this date. Must be specified in ISO 8601 format.",
+            "id": "exaSearch_0-input-endCrawlDate-string"
+          },
+          {
+            "label": "Start Published Date",
+            "name": "startPublishedDate",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "placeholder": "2023-01-01T00:00:00.000Z",
+            "description": "Only links with a published date after this will be returned. Must be specified in ISO 8601 format.",
+            "id": "exaSearch_0-input-startPublishedDate-string"
+          },
+          {
+            "label": "End Published Date",
+            "name": "endPublishedDate",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "placeholder": "2023-12-31T00:00:00.000Z",
+            "description": "Only links with a published date before this will be returned. Must be specified in ISO 8601 format.",
+            "id": "exaSearch_0-input-endPublishedDate-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "description": "A wrapper around Exa Search. Input should be an Exa-optimized query. Output is a JSON array of the query results",
+          "numResults": "",
+          "type": "",
+          "useAutoprompt": "",
+          "category": "",
+          "includeDomains": "",
+          "excludeDomains": "",
+          "startCrawlDate": "",
+          "endCrawlDate": "",
+          "startPublishedDate": "",
+          "endPublishedDate": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "exaSearch_0-output-exaSearch-ExaSearch|Tool|StructuredTool|Runnable",
+            "name": "exaSearch",
+            "label": "ExaSearch",
+            "description": "Wrapper around Exa Search API - search engine fully designed for use by LLMs",
+            "type": "ExaSearch | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 328,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 913.4049826455044,
+        "y": 68.2996737285636
+      }
+    },
+    {
+      "id": "webBrowser_0",
+      "position": {
+        "x": 1246.2718040425498,
+        "y": 819.2313719992782
+      },
+      "type": "customNode",
+      "data": {
+        "id": "webBrowser_0",
+        "label": "Web Browser",
+        "version": 1,
+        "name": "webBrowser",
+        "type": "WebBrowser",
+        "baseClasses": [
+          "WebBrowser",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Gives agent the ability to visit a website and extract information",
+        "inputParams": [],
+        "inputAnchors": [
+          {
+            "label": "Language Model",
+            "name": "model",
+            "type": "BaseLanguageModel",
+            "id": "webBrowser_0-input-model-BaseLanguageModel"
+          },
+          {
+            "label": "Embeddings",
+            "name": "embeddings",
+            "type": "Embeddings",
+            "id": "webBrowser_0-input-embeddings-Embeddings"
+          }
+        ],
+        "inputs": {
+          "model": "{{groqChat_0.data.instance}}",
+          "embeddings": "{{openAIEmbeddings_0.data.instance}}"
+        },
+        "outputAnchors": [
+          {
+            "id": "webBrowser_0-output-webBrowser-WebBrowser|Tool|StructuredTool|Runnable",
+            "name": "webBrowser",
+            "label": "WebBrowser",
+            "description": "Gives agent the ability to visit a website and extract information",
+            "type": "WebBrowser | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 281,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1246.2718040425498,
+        "y": 819.2313719992782
+      },
+      "dragging": false
+    },
+    {
+      "id": "openAIEmbeddings_0",
+      "position": {
+        "x": 1908.4390166073858,
+        "y": 62.35562334647352
+      },
+      "type": "customNode",
+      "data": {
+        "id": "openAIEmbeddings_0",
+        "label": "OpenAI Embeddings",
+        "version": 4,
+        "name": "openAIEmbeddings",
+        "type": "OpenAIEmbeddings",
+        "baseClasses": [
+          "OpenAIEmbeddings",
+          "Embeddings"
+        ],
+        "category": "Embeddings",
+        "description": "OpenAI API to generate embeddings for a given text",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "openAIApi"
+            ],
+            "id": "openAIEmbeddings_0-input-credential-credential"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "default": "text-embedding-ada-002",
+            "id": "openAIEmbeddings_0-input-modelName-asyncOptions"
+          },
+          {
+            "label": "Strip New Lines",
+            "name": "stripNewLines",
+            "type": "boolean",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-stripNewLines-boolean"
+          },
+          {
+            "label": "Batch Size",
+            "name": "batchSize",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-batchSize-number"
+          },
+          {
+            "label": "Timeout",
+            "name": "timeout",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-timeout-number"
+          },
+          {
+            "label": "BasePath",
+            "name": "basepath",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-basepath-string"
+          },
+          {
+            "label": "Dimensions",
+            "name": "dimensions",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-dimensions-number"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "modelName": "text-embedding-3-small",
+          "stripNewLines": "",
+          "batchSize": "",
+          "timeout": "",
+          "basepath": "",
+          "dimensions": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings",
+            "name": "openAIEmbeddings",
+            "label": "OpenAIEmbeddings",
+            "description": "OpenAI API to generate embeddings for a given text",
+            "type": "OpenAIEmbeddings | Embeddings"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 424,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1908.4390166073858,
+        "y": 62.35562334647352
+      },
+      "dragging": false
+    },
+    {
+      "id": "pinecone_0",
+      "position": {
+        "x": 2268.6484697620454,
+        "y": 512.1221022579568
+      },
+      "type": "customNode",
+      "data": {
+        "id": "pinecone_0",
+        "label": "Pinecone",
+        "version": 5,
+        "name": "pinecone",
+        "type": "Pinecone",
+        "baseClasses": [
+          "Pinecone",
+          "VectorStoreRetriever",
+          "BaseRetriever"
+        ],
+        "category": "Vector Stores",
+        "description": "Upsert embedded data and perform similarity or mmr search using Pinecone, a leading fully managed hosted vector database",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "pineconeApi"
+            ],
+            "id": "pinecone_0-input-credential-credential"
+          },
+          {
+            "label": "Pinecone Index",
+            "name": "pineconeIndex",
+            "type": "string",
+            "id": "pinecone_0-input-pineconeIndex-string"
+          },
+          {
+            "label": "Pinecone Namespace",
+            "name": "pineconeNamespace",
+            "type": "string",
+            "placeholder": "my-first-namespace",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-pineconeNamespace-string"
+          },
+          {
+            "label": "File Upload",
+            "name": "fileUpload",
+            "description": "Allow file upload on the chat",
+            "hint": {
+              "label": "How to use",
+              "value": "\n**File Upload**\n\nThis allows file upload on the chat. Uploaded files will be upserted on the fly to the vector store.\n\n**Note:**\n- You can only turn on file upload for one vector store at a time.\n- At least one Document Loader node should be connected to the document input.\n- Document Loader should be file types like PDF, DOCX, TXT, etc.\n\n**How it works**\n- Uploaded files will have the metadata updated with the chatId.\n- This will allow the file to be associated with the chatId.\n- When querying, metadata will be filtered by chatId to retrieve files associated with the chatId.\n"
+            },
+            "type": "boolean",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-fileUpload-boolean"
+          },
+          {
+            "label": "Pinecone Text Key",
+            "name": "pineconeTextKey",
+            "description": "The key in the metadata for storing text. Default to `text`",
+            "type": "string",
+            "placeholder": "text",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-pineconeTextKey-string"
+          },
+          {
+            "label": "Pinecone Metadata Filter",
+            "name": "pineconeMetadataFilter",
+            "type": "json",
+            "optional": true,
+            "additionalParams": true,
+            "id": "pinecone_0-input-pineconeMetadataFilter-json"
+          },
+          {
+            "label": "Top K",
+            "name": "topK",
+            "description": "Number of top results to fetch. Default to 4",
+            "placeholder": "4",
+            "type": "number",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-topK-number"
+          },
+          {
+            "label": "Search Type",
+            "name": "searchType",
+            "type": "options",
+            "default": "similarity",
+            "options": [
+              {
+                "label": "Similarity",
+                "name": "similarity"
+              },
+              {
+                "label": "Max Marginal Relevance",
+                "name": "mmr"
+              }
+            ],
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-searchType-options"
+          },
+          {
+            "label": "Fetch K (for MMR Search)",
+            "name": "fetchK",
+            "description": "Number of initial documents to fetch for MMR reranking. Default to 20. Used only when the search type is MMR",
+            "placeholder": "20",
+            "type": "number",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-fetchK-number"
+          },
+          {
+            "label": "Lambda (for MMR Search)",
+            "name": "lambda",
+            "description": "Number between 0 and 1 that determines the degree of diversity among the results, where 0 corresponds to maximum diversity and 1 to minimum diversity. Used only when the search type is MMR",
+            "placeholder": "0.5",
+            "type": "number",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-lambda-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Document",
+            "name": "document",
+            "type": "Document",
+            "list": true,
+            "optional": true,
+            "id": "pinecone_0-input-document-Document"
+          },
+          {
+            "label": "Embeddings",
+            "name": "embeddings",
+            "type": "Embeddings",
+            "id": "pinecone_0-input-embeddings-Embeddings"
+          },
+          {
+            "label": "Record Manager",
+            "name": "recordManager",
+            "type": "RecordManager",
+            "description": "Keep track of the record to prevent duplication",
+            "optional": true,
+            "id": "pinecone_0-input-recordManager-RecordManager"
+          }
+        ],
+        "inputs": {
+          "document": "",
+          "embeddings": "{{openAIEmbeddings_0.data.instance}}",
+          "recordManager": "",
+          "pineconeIndex": "flowiseia",
+          "pineconeNamespace": "",
+          "fileUpload": "",
+          "pineconeTextKey": "",
+          "pineconeMetadataFilter": "",
+          "topK": "",
+          "searchType": "similarity",
+          "fetchK": "",
+          "lambda": ""
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "pinecone_0-output-retriever-Pinecone|VectorStoreRetriever|BaseRetriever",
+                "name": "retriever",
+                "label": "Pinecone Retriever",
+                "description": "",
+                "type": "Pinecone | VectorStoreRetriever | BaseRetriever"
+              },
+              {
+                "id": "pinecone_0-output-vectorStore-Pinecone|VectorStore",
+                "name": "vectorStore",
+                "label": "Pinecone Vector Store",
+                "description": "",
+                "type": "Pinecone | VectorStore"
+              }
+            ],
+            "default": "retriever"
+          }
+        ],
+        "outputs": {
+          "output": "retriever"
+        },
+        "selected": false
+      },
+      "width": 300,
+      "height": 606,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 2268.6484697620454,
+        "y": 512.1221022579568
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "groqChat_0",
+      "sourceHandle": "groqChat_0-output-groqChat-GroqChat|BaseChatModel|BaseLanguageModel|Runnable",
+      "target": "supervisor_0",
+      "targetHandle": "supervisor_0-input-model-BaseChatModel",
+      "type": "buttonedge",
+      "id": "groqChat_0-groqChat_0-output-groqChat-GroqChat|BaseChatModel|BaseLanguageModel|Runnable-supervisor_0-supervisor_0-input-model-BaseChatModel"
+    },
+    {
+      "source": "supervisor_0",
+      "sourceHandle": "supervisor_0-output-supervisor-Supervisor",
+      "target": "worker_0",
+      "targetHandle": "worker_0-input-supervisor-Supervisor",
+      "type": "buttonedge",
+      "id": "supervisor_0-supervisor_0-output-supervisor-Supervisor-worker_0-worker_0-input-supervisor-Supervisor"
+    },
+    {
+      "source": "supervisor_0",
+      "sourceHandle": "supervisor_0-output-supervisor-Supervisor",
+      "target": "worker_1",
+      "targetHandle": "worker_1-input-supervisor-Supervisor",
+      "type": "buttonedge",
+      "id": "supervisor_0-supervisor_0-output-supervisor-Supervisor-worker_1-worker_1-input-supervisor-Supervisor"
+    },
+    {
+      "source": "supervisor_0",
+      "sourceHandle": "supervisor_0-output-supervisor-Supervisor",
+      "target": "worker_2",
+      "targetHandle": "worker_2-input-supervisor-Supervisor",
+      "type": "buttonedge",
+      "id": "supervisor_0-supervisor_0-output-supervisor-Supervisor-worker_2-worker_2-input-supervisor-Supervisor"
+    },
+    {
+      "source": "supervisor_0",
+      "sourceHandle": "supervisor_0-output-supervisor-Supervisor",
+      "target": "worker_3",
+      "targetHandle": "worker_3-input-supervisor-Supervisor",
+      "type": "buttonedge",
+      "id": "supervisor_0-supervisor_0-output-supervisor-Supervisor-worker_3-worker_3-input-supervisor-Supervisor"
+    },
+    {
+      "source": "supervisor_0",
+      "sourceHandle": "supervisor_0-output-supervisor-Supervisor",
+      "target": "worker_4",
+      "targetHandle": "worker_4-input-supervisor-Supervisor",
+      "type": "buttonedge",
+      "id": "supervisor_0-supervisor_0-output-supervisor-Supervisor-worker_4-worker_4-input-supervisor-Supervisor"
+    },
+    {
+      "source": "supervisor_0",
+      "sourceHandle": "supervisor_0-output-supervisor-Supervisor",
+      "target": "worker_5",
+      "targetHandle": "worker_5-input-supervisor-Supervisor",
+      "type": "buttonedge",
+      "id": "supervisor_0-supervisor_0-output-supervisor-Supervisor-worker_5-worker_5-input-supervisor-Supervisor"
+    },
+    {
+      "source": "exaSearch_0",
+      "sourceHandle": "exaSearch_0-output-exaSearch-ExaSearch|Tool|StructuredTool|Runnable",
+      "target": "worker_3",
+      "targetHandle": "worker_3-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "exaSearch_0-exaSearch_0-output-exaSearch-ExaSearch|Tool|StructuredTool|Runnable-worker_3-worker_3-input-tools-Tool"
+    },
+    {
+      "source": "exaSearch_0",
+      "sourceHandle": "exaSearch_0-output-exaSearch-ExaSearch|Tool|StructuredTool|Runnable",
+      "target": "worker_1",
+      "targetHandle": "worker_1-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "exaSearch_0-exaSearch_0-output-exaSearch-ExaSearch|Tool|StructuredTool|Runnable-worker_1-worker_1-input-tools-Tool"
+    },
+    {
+      "source": "webBrowser_0",
+      "sourceHandle": "webBrowser_0-output-webBrowser-WebBrowser|Tool|StructuredTool|Runnable",
+      "target": "worker_3",
+      "targetHandle": "worker_3-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "webBrowser_0-webBrowser_0-output-webBrowser-WebBrowser|Tool|StructuredTool|Runnable-worker_3-worker_3-input-tools-Tool"
+    },
+    {
+      "source": "groqChat_0",
+      "sourceHandle": "groqChat_0-output-groqChat-GroqChat|BaseChatModel|BaseLanguageModel|Runnable",
+      "target": "webBrowser_0",
+      "targetHandle": "webBrowser_0-input-model-BaseLanguageModel",
+      "type": "buttonedge",
+      "id": "groqChat_0-groqChat_0-output-groqChat-GroqChat|BaseChatModel|BaseLanguageModel|Runnable-webBrowser_0-webBrowser_0-input-model-BaseLanguageModel"
+    },
+    {
+      "source": "openAIEmbeddings_0",
+      "sourceHandle": "openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings",
+      "target": "webBrowser_0",
+      "targetHandle": "webBrowser_0-input-embeddings-Embeddings",
+      "type": "buttonedge",
+      "id": "openAIEmbeddings_0-openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings-webBrowser_0-webBrowser_0-input-embeddings-Embeddings"
+    },
+    {
+      "source": "openAIEmbeddings_0",
+      "sourceHandle": "openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings",
+      "target": "pinecone_0",
+      "targetHandle": "pinecone_0-input-embeddings-Embeddings",
+      "type": "buttonedge",
+      "id": "openAIEmbeddings_0-openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings-pinecone_0-pinecone_0-input-embeddings-Embeddings"
+    }
+  ]
+}
